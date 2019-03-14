@@ -13,4 +13,12 @@ public class Pattern {
         this.pattern = Util.imageToPattern(image);
     }
 
+    public int height() {
+        return pattern.length;
+    }
+
+    public int width() {
+        return pattern[0].length;
+    }
+
 }

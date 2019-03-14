@@ -3,12 +3,34 @@
  */
 package me.bo0tzz.spaceinvaders;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
+
+    private static final String[] KNOWN_PATTERNS = {"crab", "cuttlefish", "octopus", "squid"};
+
+    public static void main(String[] args) throws IOException, ParseException {
+
+        List<Pattern> known = new ArrayList<>();
+
+        for (String knownPattern : KNOWN_PATTERNS) {
+            String p = ResourceLoader.loadAsString("patterns/" + knownPattern);
+            known.add(new Pattern(p));
+        }
+
+        String r = ResourceLoader.loadAsString("radar");
+        RadarImage radarImage = new RadarImage(r);
+
+        //Step through radar image. For every coord:
+            //For every known pattern:
+                //Get window size of pattern
+                //Compare window to pattern
+                //Store table (guava) of <coord, pattern, percentage>
+        //Output the highest n scores
+
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-    }
 }
