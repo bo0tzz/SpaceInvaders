@@ -1,19 +1,19 @@
 package me.bo0tzz.spaceinvaders;
 
+import lombok.experimental.UtilityClass;
+
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@UtilityClass
 public class Util {
 
-    private static final Pattern allowedCharacterMatcher = Pattern.compile("[^-o\\n]");
+    private final Pattern allowedCharacterMatcher = Pattern.compile("[^-o\\n]");
 
-    public static final boolean[][] EMPTY_PATTERN = new boolean[0][0];
+    public final boolean[][] EMPTY_PATTERN = new boolean[0][0];
 
-    private Util() {
-    }
-
-    public static boolean isEmpty(String string) {
+    public boolean isEmpty(String string) {
         return string == null || string.length() == 0;
     }
 
@@ -23,7 +23,7 @@ public class Util {
      * -o
      * o-
      */
-    public static boolean[][] imageToPattern(String image) throws ParseException {
+    public boolean[][] imageToPattern(String image) throws ParseException {
 
         if (isEmpty(image)) {
             throw new ParseException("Empty input", 0);
