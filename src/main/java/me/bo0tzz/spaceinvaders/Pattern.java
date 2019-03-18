@@ -30,6 +30,17 @@ public class Pattern {
         return pattern[0].length;
     }
 
+    public int size() {
+        return this.height() * this.width();
+    }
+
+    public boolean get(Coordinate coordinate) {
+        return pattern[coordinate.getY()][coordinate.getX()];
+    }
+
+    /**
+     * @return a stream of every coordinate pair in this Pattern
+     */
     public Stream<Coordinate> coordinateStream() {
 
         Set<Integer> xCoords = ContiguousSet.closed(0, this.width() - 1);
@@ -69,6 +80,25 @@ public class Pattern {
         }
 
         return new Pattern(window);
+
+    }
+
+    /**
+     * Calculate how much overlap this pattern has with the target.
+     * @param target the target pattern to compare to
+     * @return the percentage of points that are the same in both patterns
+     */
+    public long match(Pattern target) {
+
+        if (target.height() != this.height() || target.width() != this.width()) {
+            throw new IllegalArgumentException("Target pattern size does not match");
+        }
+
+        long overlap = target.coordinateStream()
+                .filter(c -> target.get(c) == this.get(c))
+                .count();
+
+        return overlap / target.size() * 100;
 
     }
 

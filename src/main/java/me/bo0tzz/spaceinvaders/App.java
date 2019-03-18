@@ -3,10 +3,15 @@
  */
 package me.bo0tzz.spaceinvaders;
 
+import com.google.mu.util.stream.BiStream;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class App {
 
@@ -23,6 +28,18 @@ public class App {
 
         String r = ResourceLoader.loadAsString("radar");
         RadarImage radarImage = new RadarImage(r);
+
+        Map<Pattern, Map<Coordinate, Long>> detections = new HashMap<>();
+
+        for (Pattern pattern : known) {
+            Map<Coordinate, Long> coordinateLongMap = BiStream.biStream(radarImage.coordinateStream(),
+                    Function.identity(),
+                    coord -> radarImage.windowAt(coord, pattern.width(), pattern.height()))
+                    .mapValues(pattern::match)
+                    .toMap();
+
+            detections.put(pattern, coordinateLongMap);
+        }
 
         //Step through radar image. For every coord:
             //For every known pattern:
