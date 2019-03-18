@@ -18,6 +18,10 @@ public class Pattern {
         this.pattern = Util.imageToPattern(image);
     }
 
+    private Pattern(boolean[][] pattern) {
+        this.pattern = pattern;
+    }
+
     public int height() {
         return pattern.length;
     }
@@ -33,6 +37,27 @@ public class Pattern {
 
         return Sets.cartesianProduct(xCoords, yCoords).stream()
                 .map(list -> new Coordinate(list.get(0), list.get(1)));
+
+    }
+
+    public Pattern windowAt(Coordinate coordinate, int width, int height) {
+
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("Negative window size is not allowed");
+        }
+
+        boolean[][] window =  new boolean[height][width];
+
+        //For every line in our window
+        for (int y = coordinate.getY(); y < coordinate.getY() + height; y++) {
+            //Copy the columns in our window to the output array
+            int pos = coordinate.getX();
+            boolean[] src = pattern[y];
+            boolean[] dest = window[y];
+            System.arraycopy(src, pos, dest, pos, width);
+        }
+
+        return new Pattern(window);
 
     }
 
